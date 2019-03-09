@@ -7,19 +7,29 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: [],
+      items: [
+        { name: 'Fred', likes: 0 },
+        { name: 'Harrison', likes: 0 }
+      ],
       mostLiked: { likes: 0 }
     }
   }
 
-  /*TODO
+  addItem = (item) => {
+    let items = this.state.items.slice();
+    items.push({
+      name: item,
+      likes: 0
+    });
+    this.setState({ items });
+  }
 
-  add item: which creates a new item in the state items array
-    - format needs to be { name: name, likes: 0}
-
-  delete item: removes one of the clicked items from the array
-  */
-
+  deleteItem = (index) => {
+    let items = [...this.state.items];
+    items.splice(index, 1)
+    this.setState({ items })
+  }
+  
   //accepts and index, will increase like count for that item and also determine who has the most likes
   updateItem = (index) => {  
     let items = [...this.state.items];
@@ -38,8 +48,14 @@ class App extends Component {
       <div id="mainApp" className="center vertical">
         {mostLiked.likes > 0 && <div id="mostLiked"><div>Most Liked:</div><ListItem number={'hey'} item={mostLiked}/></div>}
         <div>SHOULD DISPLAY CREATE</div>
-        <div>SHOULD DISPLAY LIST</div>
+        <List
+          name={ this.state.items }
+          deleteItem={ this.deleteItem }
+          updateItem={ this.updateItem }
+        />
       </div>
       )
   }
 }
+
+export default App;
